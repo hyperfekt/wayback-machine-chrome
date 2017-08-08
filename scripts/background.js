@@ -430,11 +430,14 @@ function getWaybackUrlFromResponse(response) {
       response.results[0].archived_snapshots.closest.available === true &&
       response.results[0].archived_snapshots.closest.status.indexOf("2") === 0 &&
       isValidSnapshotUrl(response.results[0].archived_snapshots.closest.url)) {
-    return makeHttps(response.results[0].archived_snapshots.closest.url);
+    return makeHttps(makeIdUrlFromTimestamp(response.results[0].archived_snapshots.closest.url,response.results[0].archived_snapshots.closest.timestamp));
   } else {
     return null;
   }
 }
+
+function makeIdUrlFromTimestamp(url, timestamp) {
+  return url.replace(timestamp, timestamp + 'id_');
 
 function makeHttps(url) {
   return url.replace(/^http:/, "https:");
